@@ -1,28 +1,41 @@
-import exception.CustomException
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import model.Course
+import model.Student
 import service.CourseService
 import service.StudentService
 import serviceImpl.CourseServiceImpl
 import serviceImpl.StudentServiceImpl
 
-fun main()  {
+fun main(): Unit = runBlocking {
+
+    val supervisor = SupervisorJob()
+    val scope = CoroutineScope(Dispatchers.Default + supervisor)
+
 
     try {
-
         val studentService: StudentService = StudentServiceImpl()
         val courseService: CourseService = CourseServiceImpl()
 
-        val allStudents = studentService.listStudents()
-        val allCourse = courseService.listCourses()
+        var allStudents : List<Student>? = null
+        var allCourses : List<Course>? = null
+
+        val studentJob = scope.launch {
+            allStudents = studentService.listStudents()
+        }
+
+        val courseJob = scope.launch {
+            allCourses = courseService.listCourses()
+        }
+
+        studentJob.join()
+        courseJob.join()
 
         println("All Students")
-        allStudents.forEach { println(it) }
+        allStudents?.forEach { println(it) }
 
         println("All Courses")
-        allCourse.forEach { println(it) }
+        allCourses?.forEach { println(it) }
 
-        val newStudent = studentService.registerStudent("Monkey.D.Luffy","one.piece@gmail.com") ?: "Student Not Added"
-        println(newStudent)
     } catch (e : Exception){
         println(e.message)
     }
