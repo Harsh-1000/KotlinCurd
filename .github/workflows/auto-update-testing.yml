@@ -28,6 +28,8 @@ jobs:
         run: |
           git checkout -B testing
           git push origin testing --force
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
       - name: Build JAR file with gradle
         run: |
           ./gradlew build
