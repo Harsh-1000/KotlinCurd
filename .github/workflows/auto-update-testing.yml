@@ -27,6 +27,7 @@ jobs:
       - name: Update testing branch
         run: |
           git checkout -b testing
+          git pull origin testing 
           git pull origin main
           git push origin testing
       - name: Make gradlew executable
