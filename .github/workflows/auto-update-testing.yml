@@ -23,9 +23,7 @@ jobs:
           git pull origin testing
       - name: Merge main into testing branch
         run: |
-          git merge origin/main --no-edit
-	  git add -A
-          git commit -m "updated testing from main"
+          git merge origin/main --allow-unrelated-histories --no-edit
           git push origin testing
       - name: Build JAR file with gradle
         run: |
