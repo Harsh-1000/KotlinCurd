@@ -3,6 +3,10 @@ name: Auto Update Testing and Build JAR
   push:
     branches:
       - main
+
+permissions:
+  contents: write
+
 jobs:
   update-testing-and-build:
     runs-on: ubuntu-latest
