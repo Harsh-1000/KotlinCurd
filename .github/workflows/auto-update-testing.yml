@@ -23,7 +23,7 @@ jobs:
           git pull origin testing
       - name: Merge main into testing branch
         run: |
-          git merge origin main
+          git merge origin/main --no-edit
 	  git add .
           git commit -m "updated testing from main"
           git push origin testing
