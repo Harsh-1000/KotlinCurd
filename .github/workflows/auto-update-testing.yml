@@ -1,55 +1,35 @@
 name: Auto Update Testing and Build JAR
-
-on:
+'on':
   push:
     branches:
-      - main	# Trigger this action only on pushes to the main branch
-
+      - main
 jobs:
   update-testing-and-build:
     runs-on: ubuntu-latest
-
-
     steps:
-      # Step 1: Checkout the main branch
       - name: Checkout main branch
         uses: actions/checkout@v3
         with:
           ref: main
-
-      
-      # Step 2: Set up Java (JDK version you need, e.g 21)
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
-         java-version: '21'
-         distribution: 'adoptopenjdk'
-
-      
-      # Step 3: Pull the latest changes from testing branch
+          java-version: '21'
+          distribution: adoptopenjdk
       - name: Checkout testing branch
         run: |
-	  git fetch origin
+          git fetch origin
           git checkout testing
           git pull origin testing
-
-      
-      # Step 4: Merge changes from main into testing branch
       - name: Merge main into testing branch
         run: |
           git merge origin/main --no-edit
           git push origin testing
-
-
-      # Step 5: Build JAR file using gradle
       - name: Build JAR file with gradle
         run: |
           ./gradlew build
-
-
-      # Step 6: Upload JAR artifact
       - name: Upload JAR file as artifact
         uses: actions/upload-articat@v3
         with:
           name: jar-file
-          path: build/libs/*.jar 
+          path: build/libs/*.jar
