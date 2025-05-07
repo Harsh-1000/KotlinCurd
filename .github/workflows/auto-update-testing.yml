@@ -26,8 +26,9 @@ jobs:
           git config --global user.email "actions@github.com"
       - name: Update testing branch
         run: |
-          git checkout -B testing
-          git push origin testing --force
+          git checkout -b testing
+          git git pull origin main
+          git push origin testing
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Build JAR file with gradle
